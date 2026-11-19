@@ -1,31 +1,33 @@
-# Sistem Pelaporan Kokurikulum SK Taman Daya
+# OPR KOKURIKULUM SK TAMAN RINTING 3
 
-## GitHub Pages
-1. Extract ZIP ini.
-2. Upload index.html, styles.css, app.js, config.js dan .nojekyll ke root repository GitHub. Jangan upload ZIP sahaja.
-3. Settings > Pages > Deploy from a branch > main > /(root) > Save.
-4. Buka pautan GitHub Pages yang dipaparkan.
+Lencana dan tajuk laman dikemas kini. Upload folder assets bersama fail frontend ke root repository GitHub.
 
-Dashboard telah dipautkan kepada ID Google Sheet, URL CSV dan URL Apps Script yang diberi. Tiada data demonstrasi dimasukkan. CSV semasa semakan masih kosong. Muat semula dashboard selepas rekod disimpan; penerbitan CSV Google mungkin tertangguh.
+# Pembetulan Borang KOKO — versi 3
 
-## Pengisian dan simpanan sebenar
-Klik “Buka pengisian Google Apps Script”. Akses Google kekal diperlukan. Semasa semakan, endpoint membalas “Akses ditolak. Gunakan akaun guru yang disenaraikan pentadbir.” Oleh itu simpanan sebenar belum dapat disahkan.
+Punca masalah: versi terdahulu menyembunyikan borang pada GitHub Pages. Versi ini memaparkan borang penuh dan menggunakan jambatan Google yang disahkan untuk simpan/edit/padam. Tiada kata laluan atau akses tanpa nama ditambah.
 
-Dalam Apps Script > Project Settings > Script Properties:
-- SPREADSHEET_ID: 1_Vtfr2HRBPBGnnTf0Ku2SNMVGDRQy_NQMW1TTHN-JZc
-- ALLOWED_EMAILS: emel guru sebenar dipisahkan dengan koma.
-- FOLDER_ID: ID folder Drive untuk gambar / lampiran.
+## 1. GitHub
+Upload dan replace index.html, styles.css, app.js, config.js, .nojekyll. Tunggu GitHub Pages selesai deploy. Refresh dengan Ctrl+Shift+R / Cmd+Shift+R. Borang Laporan kini mesti memaparkan medan Nama pertandingan, Tarikh dan Senarai peserta.
 
-Jangan letak kata laluan atau token Google dalam repository.
+## 2. Apps Script — WAJIB untuk simpan dari GitHub
+- Gantikan Code.gs dengan apps-script/Code.gs dalam pakej ini.
+- Cipta fail HTML bernama Bridge. Salin kandungan apps-script/Bridge.html.
+- Kemas kini fail HTML Index, App, Styles dan Config menggunakan fail sepadan dalam apps-script.
+- Kekalkan Script Properties ALLOWED_EMAILS, SPREADSHEET_ID dan FOLDER_ID.
+- Jalankan setup jika helaian belum dicipta.
+- Deploy > Manage deployments > pensel > New version > Deploy. Gunakan deployment sedia ada untuk kekalkan URL.
+- Kekalkan Execute as User accessing the web app dan akses guru yang dibenarkan. Guru mesti mempunyai akses Sheet dan folder Drive.
 
-Jika versi borang dalam deployment belum lengkap, kemas kini menggunakan fail dalam folder apps-script: Code.gs dan fail HTML Index, Styles, App, Config. Jalankan setup selepas akaun pentadbir dimasukkan dalam ALLOWED_EMAILS. Deploy versi baharu menggunakan deployment sedia ada supaya URL kekal sama. Pilih Execute as User accessing the web app, beri akses Sheet dan folder kepada guru, dan hadkan akses organisasi jika tersedia.
+## 3. Ujian
+- Log masuk Google melalui butang Log masuk Google jika perlu, benarkan akses.
+- Kembali ke GitHub > Borang Laporan > Semak sambungan.
+- Jika berjaya, isi satu laporan tanpa gambar dahulu > Simpan laporan.
+- Semak rekod dalam Sheet dan muat semula. Kemudian uji gambar.
+- Jika pelayar menyekat log masuk Google dalam iframe, benarkan kuki Google untuk laman ini atau gunakan aplikasi Apps Script secara terus. Borang di GitHub kekal tersedia.
 
-## Bacaan CSV
-Terbitkan tab Pertandingan (yang mempunyai kolum DataJSON) melalui File > Share > Publish to web. config.js menyimpan URL CSV; ubah gid jika tab Pertandingan bukan gid=0. CSV yang diterbitkan boleh dibaca oleh sesiapa yang mempunyai pautan. Jangan terbitkan data murid yang tidak dibenarkan untuk perkongsian. Bagi rekod sulit, gunakan aplikasi Apps Script sahaja dan hentikan penerbitan CSV.
+## Bagaimana sambungan berfungsi
+Borang GitHub menghantar permintaan kepada iframe Apps Script menggunakan postMessage. Code.gs mengesahkan akaun guru untuk setiap operasi. Origin, sumber mesej dan nonce sesi disemak di kedua-dua belah. Hanya origin educreatorsystem.github.io dan laman Sites yang dibenarkan; jika domain berubah, kemas kini senarai allowed dalam doGet.
 
-## Fail
-Frontend GitHub: index.html, styles.css, app.js, config.js, .nojekyll.
-Backend Google: folder apps-script (bukan dijalankan oleh GitHub Pages).
+Bacaan dashboard menggunakan CSV yang diberi. Versi backend lama tidak mempunyai jambatan ini: frontend baharu sahaja belum cukup untuk simpan. Tiada ujian tulis ke database sekolah dilakukan oleh pembangun. Ujian akaun Google sebenar diperlukan selepas deployment.
 
-## Pengesahan
-CSV berjaya diakses dan kosong. Apps Script memberi ralat akses akaun; ia belum menerima ujian simpanan. GitHub Pages tidak menjalankan Code.gs. Semua operasi tulis menggunakan aplikasi Google yang dilindungi, tanpa kata laluan dalam JavaScript.
+Jika permintaan simpan tamat masa selepas dihantar, semak Sheet sebelum cuba semula. Jangan anggap simpan berjaya tanpa pengesahan pelayan.

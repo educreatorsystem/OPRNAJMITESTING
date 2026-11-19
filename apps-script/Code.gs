@@ -1,5 +1,16 @@
 /** Tetapkan SPREADSHEET_ID, FOLDER_ID, ALLOWED_EMAILS pada Script Properties. */
-function doGet(){authorize_();return HtmlService.createTemplateFromFile('Index').evaluate().setTitle('Sistem Pelaporan Kokurikulum');}
+function doGet(e){
+ authorize_();
+ if(e&&e.parameter.mode==='bridge'){
+  const origin=String(e.parameter.origin||'');
+  const allowed=['https://educreatorsystem.github.io','https://koko-taman-daya-yani.g-52033830.chatgpt.site'];
+  if(allowed.indexOf(origin)<0)throw new Error('Origin laman tidak dibenarkan.');
+  const nonce=String(e.parameter.nonce||'');if(!/^[a-f0-9-]{36}$/.test(nonce))throw new Error('Sesi tidak sah.');
+  const t=HtmlService.createTemplateFromFile('Bridge');t.clientOrigin=origin;t.clientNonce=nonce;
+  return t.evaluate().setTitle('Sambungan KOKO').setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+ }
+ return HtmlService.createTemplateFromFile('Index').evaluate().setTitle('OPR KOKURIKULUM SK TAMAN RINTING 3');
+}
 function include(name){return HtmlService.createHtmlOutputFromFile(name).getContent();}
 function authorize_(){const p=PropertiesService.getScriptProperties();const email=Session.getActiveUser().getEmail().toLowerCase();const allowed=(p.getProperty('ALLOWED_EMAILS')||'').toLowerCase().split(',').map(s=>s.trim());if(!email||allowed.indexOf(email)<0)throw new Error('Akses ditolak. Gunakan akaun guru yang disenaraikan pentadbir.');return email;}
 function db_(){const id=(PropertiesService.getScriptProperties().getProperty('SPREADSHEET_ID')||'1_Vtfr2HRBPBGnnTf0Ku2SNMVGDRQy_NQMW1TTHN-JZc');if(!id)throw new Error('SPREADSHEET_ID belum ditetapkan.');return SpreadsheetApp.openById(id);}
