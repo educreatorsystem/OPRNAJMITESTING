@@ -1,9 +1,10 @@
-/** OPR KOKURIKULUM SK TAMAN RINTING 3 — versi 6.
- * Script Properties: ALLOWED_EMAILS, SPREADSHEET_ID (optional), FOLDER_ID (images only).
+/** OPR KOKURIKULUM SK TAMAN RINTING 3 — versi 7.
+ * Script Properties: ALLOWED_EMAILS, SPREADSHEET_ID (optional), folder Drive ditetapkan dalam OPR_CONFIG.folderId.
  * Deploy: Execute as User accessing the web app. Preserve school account access.
  */
 const OPR_CONFIG = {
   sheetId: '1_Vtfr2HRBPBGnnTf0Ku2SNMVGDRQy_NQMW1TTHN-JZc',
+  folderId: '1O2WTK2Ld_kT_rBB9Vmb_kLwS1vcRYzzF',
   origins: ['https://educreatorsystem.github.io','https://koko-taman-daya-yani.g-52033830.chatgpt.site']
 };
 const HEADERS = {
@@ -50,7 +51,7 @@ function ensureSheets_(db) {
 /** Run once in editor and review Execution log. No test report is inserted. */
 function setup() {
   const email=authorize_(), lock=LockService.getScriptLock();lock.waitLock(30000);
-  try{const db=db_();ensureSheets_(db);SpreadsheetApp.flush();const info={ok:true,version:6,email:email,sheet:db.getName(),imagesConfigured:!!PropertiesService.getScriptProperties().getProperty('FOLDER_ID')};console.log(JSON.stringify(info));return info;}finally{lock.releaseLock();}
+  try{const db=db_();ensureSheets_(db);SpreadsheetApp.flush();const info={ok:true,version:7,email:email,sheet:db.getName(),imagesConfigured:!!OPR_CONFIG.folderId,folderId:OPR_CONFIG.folderId};console.log(JSON.stringify(info));return info;}finally{lock.releaseLock();}
 }
 function diagnose() {return setup();}
 function safe_(value) {
@@ -72,7 +73,7 @@ function upload_(f) {
   if(!m)throw new Error('Format lampiran tidak sah.');
   const bytes=Utilities.base64Decode(m[2]);
   if(bytes.length>(m[1]==='application/pdf'?5:2)*1024*1024)throw new Error('Saiz lampiran melebihi had.');
-  const folderId=PropertiesService.getScriptProperties().getProperty('FOLDER_ID');
+  const folderId=OPR_CONFIG.folderId;
   if(!folderId)throw new Error('Gambar belum boleh disimpan: tetapkan FOLDER_ID dalam Script Properties. Laporan tanpa gambar tidak memerlukan FOLDER_ID.');
   let file;
   try{file=DriveApp.getFolderById(folderId).createFile(Utilities.newBlob(bytes,m[1],String(f.name||'Lampiran')));}catch(e){throw new Error('Fail gagal dimuat naik. Semak FOLDER_ID dan akses Editor folder Drive. '+e.message);}

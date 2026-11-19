@@ -1,3 +1,23 @@
+# OPR KOKURIKULUM SK TAMAN RINTING 3 — V7
+
+Folder gambar/PDF telah ditetapkan terus dalam Code.gs:
+1O2WTK2Ld_kT_rBB9Vmb_kLwS1vcRYzzF
+
+ID dalam OPR_CONFIG.folderId digunakan untuk semua muat naik. FOLDER_ID lama dalam Script Properties tidak digunakan oleh versi ini.
+
+## Kemas kini
+1. Gantikan Code.gs dengan versi dalam pakej ini. Jangan tambah di bawah kod lama.
+2. Jika belum memasang V6, kemas kini juga Index, Styles, App, Config dan Bridge serta frontend GitHub yang disertakan.
+3. Kekalkan ALLOWED_EMAILS dan SPREADSHEET_ID. FOLDER_ID tidak perlu diisi lagi.
+4. Berikan akaun guru akses Editor kepada folder Drive tersebut dan Google Sheet.
+5. Jalankan setup, benarkan akses Google. Log memaparkan version:7 dan folderId yang ditetapkan.
+6. Deploy > Manage deployments > pensel > New version > Deploy. Kekalkan URL yang sama dan Execute as User accessing the web app.
+7. Upload frontend ke GitHub jika perlu; refresh Cmd+Shift+R. Semak sambungan, kemudian uji satu laporan dengan satu gambar kecil.
+
+Folder ID telah dimasukkan dalam kod. Akses akaun Google dan muat naik sebenar ke folder belum diuji dalam sesi ini. Perkongsian fail kekal mengikut kebenaran folder Drive.
+
+## Rujukan versi terdahulu
+
 # OPR KOKURIKULUM SK TAMAN RINTING 3 — Pembetulan Simpanan V6
 
 ## Punca yang ditemui
