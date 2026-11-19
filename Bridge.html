@@ -1,0 +1,10 @@
+<!doctype html><html><meta charset="utf-8"><body><p>Sambungan Google KOKO</p><script>
+const clientOrigin=<?!= JSON.stringify(clientOrigin) ?>,clientNonce=<?!= JSON.stringify(clientNonce) ?>,initialError=<?!= JSON.stringify(initialError) ?>;
+function send(data){window.top.postMessage({...data,nonce:clientNonce},clientOrigin)}
+window.addEventListener('message',function(e){
+ if(e.origin!==clientOrigin||e.source!==window.top||e.data?.nonce!==clientNonce||e.data?.type!=='koko-request')return;
+ const id=e.data.id,request=e.data.request;if(!['ping','list','save','delete'].includes(request?.action))return;
+ google.script.run.withSuccessHandler(result=>send({type:'koko-result',id,result})).withFailureHandler(error=>send({type:'koko-result',id,result:{ok:false,error:error.message||String(error)}})).api(request);
+});
+send(initialError?{type:'koko-error',error:initialError}:{type:'koko-ready'});
+</script></body></html>
